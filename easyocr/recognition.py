@@ -163,7 +163,10 @@ def get_recognizer(recog_network, network_params, character,\
         model_pkg = importlib.import_module("easyocr.model.vgg_model")
     else:
         model_pkg = importlib.import_module(recog_network)
-    model = model_pkg.Model(num_class=num_class, **network_params)
+    if recog_network == 'best_accuracy':
+        model = model_pkg.Model()
+    else:
+        model = model_pkg.Model(num_class=num_class, **network_params)
 
     if device == 'cpu':
         state_dict = torch.load(model_path, map_location=device)
